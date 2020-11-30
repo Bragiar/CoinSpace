@@ -14,6 +14,7 @@ module.exports = function(el){
     receive: '#receive_tab',
     // exchange: '#exchange_tab',
     history: '#history_tab',
+    traceability: '#traceability_tab',
     // tokens: '#tokens_tab'
   }
   var active;

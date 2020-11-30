@@ -11,6 +11,7 @@ var initReceive = require('pages/receive')
 var initExchange = require('pages/exchange')
 var initHistory = require('pages/history')
 var initTokens = require('pages/tokens')
+var initTraceability = require('pages/traceability')
 var Hammer = require('hammerjs')
 
 module.exports = function(el){
@@ -31,6 +32,7 @@ module.exports = function(el){
     receive: initReceive(ractive.find('#receive')),
     exchange: initExchange(ractive.find('#exchange')),
     history: initHistory(ractive.find('#history')),
+    traceability: initTraceability(ractive.find('#traceability')),
     tokens: initTokens(ractive.find('#tokens'))
   }
 

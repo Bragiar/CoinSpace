@@ -27,9 +27,11 @@ function open(data) {
     var to = ractive.get('to');
     var fee = toAtom(ractive.get('fee'));
     var value = toAtom(ractive.get('amount'));
+    var text = ractive.get('text')
     var wallet = getWallet();
     var tx = null;
     var importTxOptions = ractive.get('importTxOptions');
+    var unspents_traceandfee = ractive.get('unspents_traceandfee')
 
     try {
       if (importTxOptions) {
@@ -38,7 +40,7 @@ function open(data) {
       } else {
         console.log("to:" + to + "\nval:" + value + "\nfee:" + fee)
         console.log("bal:" + wallet.getBalance())
-        tx = wallet.createTx(to, value, fee);
+        tx = wallet.createTx(to, value, text, fee, 4 ,unspents_traceandfee);
       }
     } catch(err) {
       if (err.message.match(/Insufficient funds/)) {
@@ -50,11 +52,11 @@ function open(data) {
     tx.forEach(function(tx) {
       wallet.sendTx(tx, function (err, historyTx) {
         if (err) return handleTransactionError(err);
-  
+
         ractive.set('confirmation', false);
         ractive.set('success', true);
         ractive.set('onDismiss', ractive.get('onSuccessDismiss'));
-  
+
         // update balance & tx history
         emitter.emit('wallet-ready');
         if (historyTx) {

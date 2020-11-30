@@ -84,7 +84,7 @@ module.exports = function(el) {
         ractive.set('gasLimit', getWallet().gasLimit);
         var sa = getWallet().getServiceAddresses()["Nonprofit Organization"]; //Breyta
         if (!sa) {
-            sa = {}
+            sa = new Array();
         }
         var defDon = { name: 'None', address: '' };
         sa.unshift(defDon);
@@ -185,7 +185,7 @@ module.exports = function(el) {
         if (wallet.networkName === 'ethereum') {
             wallet.gasLimit = ractive.find('#gas-limit').value;
         }
-        validateSend(wallet, to, amount, dynamicFees, function(err) {
+        validateSend(wallet, to, amount, null, dynamicFees, function(err) {
             ractive.set('validating', false);
             if (err) {
                 var interpolations = err.interpolations

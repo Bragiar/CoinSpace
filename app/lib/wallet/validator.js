@@ -5,7 +5,7 @@ var toUnitString = require('lib/convert').toUnitString
     // Default fee amount imported from Cs-Wallet.
 var smileycoin = require('cs-wallet').bitcoin.networks.smileycoin
 
-function validateSend(wallet, to, unitValue, dynamicFees, callback) {
+function validateSend(wallet, to, unitValue, data, dynamicFees, unspents, callback) {
     var amount = toAtom(unitValue)
     var tx = null
     var fee;
@@ -21,7 +21,19 @@ function validateSend(wallet, to, unitValue, dynamicFees, callback) {
 
             fee = Math.max(feePerKb, wallet.estimateFees(to, amount, [whichFee])[0]);
         }
-        tx = wallet.createTx(to, amount, fee)
+        // check if data exceeds maximum
+        /*
+        tx = wallet.createTx(to, amount, data, fee, 4, [{address: "BJX8Xd4XxeF4Nu7vvSR3huGLmf2PYH1UeR",
+confirmations: 6,
+txId: "f2c5e4ddc9214475e10764d28cad8a78b1ab4c1368434a67ad01f253d4f9f046",
+value: 1000000000,
+vout: 0
+}]
+)
+*/
+        //tx = wallet.createTx(to, amount, data, fee, 4, unspents)
+        tx = wallet.createTx(to, amount, data, fee, 1, unspents)
+
     } catch (e) {
         var error;
         if (e.message.match(/Invalid address/)) {

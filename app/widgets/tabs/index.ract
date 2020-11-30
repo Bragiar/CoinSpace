@@ -33,4 +33,10 @@
     <span class="tab__text">{{translate("Tokens")}}</span>
   </a>
   -->
+  <a id="traceability_tab" data-tab='traceability' class="tab" on-click="select">
+    <span class="tab__icon">
+      {{>svg_history}}
+    </span>
+    <span class="tab__text">{{translate("Traceability")}}</span>
+  </a>
 </div>

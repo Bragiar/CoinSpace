@@ -100,6 +100,8 @@ module.exports = function(el) {
         var historyTxs = getWallet().historyTxs
         console.log(unspents)
         console.log(historyTxs)
+
+        // traceability
         var unspents_traceability = [];
         if (!unspents) {
             unspents = new Array();

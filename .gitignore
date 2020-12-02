@@ -10,6 +10,6 @@ build/
 docker-compose.dev.yml
 docker-compose.prod.yml
 .vscode/
-node_modules
+/node_modules
 
 /.local-conf

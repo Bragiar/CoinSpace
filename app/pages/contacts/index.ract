@@ -1,0 +1,66 @@
+
+<div class="transactions">
+  {{#loadingTx}}
+    <div class="transactions__message">
+      <div class="_message">{{translate("Loading contacts...")}}</div>
+    </div>
+  {{/loadingTx}}
+
+<label class="_label" for="address">Contact address</label>
+
+  <div class="_input-group">
+    <input id="address" class="_input" type="text" min="0" step="any" on-enter="open-send-data" on-focus="focusAmountInput" on-blur="blurAmountInput">
+  </div>
+
+<label class="_label" for="name">Contact name</label>
+
+  <div class="_input-group">
+    <input id="name" class="_input" type="text" min="0" step="any" on-enter="open-send-data" on-focus="focusAmountInput" on-blur="blurAmountInput">
+  </div>
+
+  <div style ="height:20px"></div>
+
+
+  <div class="send__buttons">
+    {{^validating}}
+      <div on-click="open-add-contact" class="send__btn">{{translate("Add contact")}}</div>
+    {{/validating}}
+    {{#validating}}
+      <div class="send__btn--validating">
+        <span class="_icon">
+          {{>svg_refresh}}
+        </span>
+      </div>
+    {{/validating}}
+  </div>
+
+  <div style ="height:20px"></div>
+
+  {{#contacts.length}}
+    <h2 style="font-size:24px" class="_title">{{translate("Your contacts")}}</h2>
+  {{/contacts.length}}
+  {{#each contacts: index}}
+    <div class="transactions__item" title="{{name}}" data-index="{{index}}" on-click="show-detail">
+
+      <div class="_contact-detail">
+      <div class= "contact-name">
+      {{this.name}}
+      </div>
+      <div class= "contact-address">
+      {{this.address}}
+      </div>
+      <div>
+
+    </div>
+  {{/each}}
+  {{^contacts}}
+    {{^loadingTx}}
+      <div class="transactions__message">
+        <div class="_icon">
+          {{>svg_help}}
+        </div>
+        <div class="_message">{{translate("You do not have any contacts")}}</div>
+      </div>
+    {{/loadingTx}}
+  {{/contacts}}
+</div>

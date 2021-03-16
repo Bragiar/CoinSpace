@@ -34,6 +34,7 @@ function remove() {
 }
 
 function getLocation(callback){
+  console.log("fetching location.... in geo")
   if (!window.navigator.geolocation){
     return callback(new Error('Your browser does not support geolocation'))
   }
@@ -68,7 +69,6 @@ function requestLocationEndpoint(network, method, callback){
     userInfo.network = network || getTokenNetwork();
     userInfo.lat = lat;
     userInfo.lon = lon;
-
     request({
       url: urlRoot + 'location',
       method: method,
@@ -81,5 +81,6 @@ module.exports = {
   search: search,
   save: save,
   remove: remove,
-  networks: networks
+  getLocation: getLocation,
+  networks: networks,
 }

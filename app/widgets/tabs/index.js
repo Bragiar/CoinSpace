@@ -10,11 +10,13 @@ module.exports = function(el){
   })
 
   var tabElements = {
-    send: '#send_tab',
+    //send: '#send_tab',
     receive: '#receive_tab',
     // exchange: '#exchange_tab',
     history: '#history_tab',
-    traceability: '#traceability_tab',
+    contacts: '#contacts_tab',
+    traceability_continue: '#traceability_tab-continue',
+    traceability_create: '#traceability_tab-create',
     // tokens: '#tokens_tab'
   }
   var active;
@@ -27,7 +29,7 @@ module.exports = function(el){
   }
 
   emitter.once('wallet-ready', function() {
-    highlightTab(ractive.find(tabElements.send));
+    highlightTab(ractive.find(tabElements.traceability_continue));
   });
 
   emitter.on('change-tab', function(tab) {

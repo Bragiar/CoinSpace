@@ -233,6 +233,68 @@ function getId() {
     return id;
 }
 
+function getTraceabilityBalance(){
+    var numberOfTraceUnspents = getTraceabilityUnspents().length; 
+    var balance = getWallet().balance;
+    return balance - numberOfTraceUnspents*10*100000000
+}
+
+function getTraceabilityUnspents() {
+    var unspents = getWallet().unspents
+    var historyTxs = getWallet().historyTxs
+    console.log(unspents)
+    console.log(historyTxs)
+
+    // traceability
+    var unspents_traceability = [];
+    if (!unspents) {
+        unspents = new Array();
+    }
+    if (!historyTxs) {
+        historyTxs = new Array();
+    }
+    for (var i = 0; i < unspents.length; i++) {
+    for (var j = 0; j < historyTxs.length; j++) {
+        if(unspents[i].txId == historyTxs[j].txId && historyTxs[j].amount >= 0 && unspents[i].vout == 0){
+        for (var k = 0; k < historyTxs[j].vout.length; k++) {
+            if(historyTxs[j].vout[k].scriptPubKey.type == 'nulldata'){
+            if(!(unspents_traceability.filter(e => e.txId === historyTxs[j].txId).length > 0)){
+                console.log(historyTxs[j].vout[k].scriptPubKey)
+                console.log(historyTxs[j])
+                console.log("vout: " + k)
+                console.log(unspents[i])
+                var unspent_trace = {
+                txId : historyTxs[j].txId,
+                op_ret: parseOpRet(historyTxs[j].vout[k].scriptPubKey.hex),
+                unspent: unspents[i]
+                };
+                unspents_traceability.push(unspent_trace)
+            }
+            }
+        }
+        }
+    }
+    }
+    console.log(unspents_traceability)
+    return unspents_traceability
+
+
+
+}
+function parseOpRet(hexx){
+    hexx = hexx.substr(4);
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+
+    if(str.split(':').length>1){
+        return str.split(':')[1].split(';')
+    } else {
+        return str.split(";");
+    }
+}
+
 function walletExists() {
     return !!walletDb.getCredentials();
 }
@@ -279,5 +341,7 @@ module.exports = {
     getPin: getPin,
     resetPin: resetPin,
     setAvailableTouchId: setAvailableTouchId,
-    getDynamicFees: getDynamicFees
+    getDynamicFees: getDynamicFees,
+    getTraceabilityUnspents: getTraceabilityUnspents,
+    getTraceabilityBalance: getTraceabilityBalance
 }

@@ -6,7 +6,7 @@ var symbols = {
   bitcoincash: 'BCH',
   litecoin: 'LTC',
   ethereum: 'ETH',
-  smileycoin: 'SMLY'
+  smileycoin: 'credits'
 }
 
 function getDenomination(token) {

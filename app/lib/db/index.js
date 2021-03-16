@@ -33,9 +33,11 @@ function initDetails() {
     userInfo: {
       firstName: '',
       lastName: '',
+      location: '',
       email: '',
       avatarIndex: randAvatarIndex()
-    }
+    },
+    contacts: []
   }
   return save(defaultValue);
 }

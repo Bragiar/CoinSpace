@@ -14,8 +14,10 @@
     <div id="receive" class="content"></div>
     <div id="exchange" class="content"></div>
     <div id="history" class="content"></div>
+     <div id="contacts" class="content"></div>
     <div id="tokens" class="content"></div>
-    <div id="traceability" class="content"></div>
+    <div id="traceability_continue" class="content"></div>
+    <div id="traceability_create" class="content"></div>
 
   </div>
 

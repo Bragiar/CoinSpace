@@ -1,0 +1,33 @@
+
+#contacts {
+
+  .green {
+    color: $green;
+  }
+
+  .red {
+    color: $red;
+  }
+}
+
+.contact-name{
+  @include ellipsis();
+    @include media-obj;
+    padding-top: 13px;
+    font-size: 21px;
+
+    @include breakpoint(portrait) {
+      padding-top: 18px;
+      font-size: 26px;
+    }
+
+}
+.contact-address{
+  display: block;
+  font-size: 14px;
+  margin-top: -5px;
+  color: $grey;
+  @include breakpoint(portrait) {
+    font-size: 16px;
+  }
+}

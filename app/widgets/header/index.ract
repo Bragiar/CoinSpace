@@ -33,15 +33,6 @@
     {{/if}}
   {{/if}}
 
-  <div class="header__currency" title="{{translate("Current coin price")}}">
-    {{bitcoinPrice(exchangeRates[selectedFiat])}} {{selectedFiat}}
-    <select value="{{selectedFiat}}">
-      {{#currencies}}
-        <option value="{{.}}">{{.}}</option>
-      {{/currencies}}
-    </select>
-  </div>
-
   <div class="header__refresh" on-click="sync-click">
     <span id="refresh_el" class="_icon loading">
       {{>svg_refresh}}

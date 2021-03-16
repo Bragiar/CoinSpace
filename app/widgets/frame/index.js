@@ -10,8 +10,10 @@ var initSend = require('pages/send')
 var initReceive = require('pages/receive')
 var initExchange = require('pages/exchange')
 var initHistory = require('pages/history')
+var initContacts = require('pages/contacts')
 var initTokens = require('pages/tokens')
-var initTraceability = require('pages/traceability')
+var initTraceability_continue = require('pages/traceability_continue')
+var initTraceability_create = require('pages/traceability_create')
 var Hammer = require('hammerjs')
 
 module.exports = function(el){
@@ -32,12 +34,14 @@ module.exports = function(el){
     receive: initReceive(ractive.find('#receive')),
     exchange: initExchange(ractive.find('#exchange')),
     history: initHistory(ractive.find('#history')),
-    traceability: initTraceability(ractive.find('#traceability')),
+    contacts: initContacts(ractive.find('#contacts')),
+    traceability_create: initTraceability_create(ractive.find('#traceability_create')),
+    traceability_continue: initTraceability_continue(ractive.find('#traceability_continue')),
     tokens: initTokens(ractive.find('#tokens'))
   }
 
-  var currentPage = tabs.send
-  showPage(tabs.send)
+  var currentPage = tabs.traceability_continue
+  showPage(tabs.traceability_continue)
 
   if (process.env.BUILD_TYPE === 'phonegap') {
     Hammer(ractive.find('#main'), {velocity: 0.1}).on('swipeleft', function() {

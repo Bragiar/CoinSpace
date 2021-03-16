@@ -4,11 +4,13 @@ var Ractive = require('lib/ractive')
 var emitter = require('lib/emitter')
 var sync = require('lib/wallet').sync
 var getWallet = require('lib/wallet').getWallet
+var getTraceabilityBalance = require('lib/wallet').getTraceabilityBalance
 var toUnit = require('lib/convert').toUnit
 var toUnitString = require('lib/convert').toUnitString
 var Big = require('big.js')
 var showError = require('widgets/modals/flash').showError
-var db = require('lib/db')
+var db = require('lib/db');
+const { getTraceabilityUnspents } = require('../../lib/wallet');
 
 module.exports = function(el) {
   var selectedFiat = '';
@@ -39,13 +41,19 @@ module.exports = function(el) {
 
   emitter.on('wallet-ready', function(){
     console.log('on wallet-ready event')
-    var balance = getWallet().getBalance()
+    var balance = getTraceabilityBalance()
+    console.log("NEW BALANCE:")
+    console.log(getTraceabilityBalance())
     ractive.set('bitcoinBalance', balance)
     ractive.set('denomination', getWallet().denomination)
+
+    console.log(ractive.get('unspents_traceability'))
   })
 
   emitter.on('update-balance', function() {
-    ractive.set('bitcoinBalance', getWallet().getBalance())
+    console.log("NEW BALANCE:")
+    console.log(getTraceabilityBalance())
+    ractive.set('bitcoinBalance', getTraceabilityBalance())
   })
 
   ractive.on('toggle', function(){

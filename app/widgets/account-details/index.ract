@@ -13,6 +13,19 @@
   </div>
 
   <div class="settings__input-group">
+    <label class="_label">{{translate("Your location")}}
+      <input id="details-location" type="text" maxlength="63" value="{{user.location}}" class="_input" />
+    </label>
+  </div>
+
+  {{^locating}}
+    <div class="settings__btn" on-click="get-location">{{translate("Get your location")}}</div>
+  {{/locating}}
+  {{#locating}}
+    <div class="settings__btn--loading">{{translate("Checking your location")}}...</div>
+  {{/locating}}
+
+  <div class="settings__input-group">
     <label class="_label">{{translate("Gravatar email")}}
       <input value="{{user.email}}" type="email" class="_input" on-enter="submit-details"/>
     </label>

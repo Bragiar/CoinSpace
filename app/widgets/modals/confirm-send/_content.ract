@@ -6,9 +6,16 @@
     <h3 class="confirm__header">{{translate("Confirm transaction")}}</h3>
 
     <div class="confirm__transaction">
-
       <div class="_amount">
+        {{#if isTraceability}}
+          {{#if isContinueTraceability}}
+          <span class="_value">Cost: {{amount - 10}}</span>
+          {{else}}
+          <span class="_value">Cost: {{amount}}</span>
+          {{/if}}
+        {{else}}
         <span class="_value">{{amount}}</span>
+        {{/if}}
         <span class="_currency">{{denomination}}</span>
       </div>
 
@@ -30,14 +37,21 @@
       {{elseif isEthereum}}
 				<span class="_fee">{{feeSign}}{{fee}} {{feeDenomination}} {{translate("transaction fee")}}</span>
 			{{/if}}
-
+      {{#isTraceability}}
+      <div style='height: 20px'></div>
+        <span class="_info_medium">Batch number: {{batchNum}}</span>
+      {{/isTraceability}}
       <span class="_icon">
         {{>svg_sendto}}
       </span>
       {{#importTxOptions}}
       <span class="_info_medium">{{translate("Your wallet address")}}</span>
       {{/importTxOptions}}
+      {{#if isTraceability}}
+       <span class="_info_medium">{{contact.name}}</span>
+      {{else}}
       <span class="_address">{{to}}</span>
+      {{/if}}
       <span class="_info_medium">{{alias}}</span>
 
     </div>

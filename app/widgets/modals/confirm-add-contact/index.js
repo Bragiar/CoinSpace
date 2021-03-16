@@ -1,6 +1,7 @@
 'use strict';
 
 var Ractive = require('widgets/modals/base');
+var db = require('lib/db');
 var emitter = require('lib/emitter');
 var getWallet = require('lib/wallet').getWallet;
 var parseHistoryTx = require('lib/wallet').parseHistoryTx;
@@ -13,65 +14,48 @@ var getTokenNetwork = require('lib/token').getTokenNetwork;
 var minTransactionFee = 100000000;
 var minFeePerByte = 100000;
 
-function open(data) {
+function open(_contact) {
 
   var ractive = new Ractive({
     partials: {
       content: require('./_content.ract')
     },
-    data: extendData(data)
+    data: {
+      addContact: true,
+    },
+    contact: _contact
   });
 
-  ractive.on('send', function(){
-    ractive.set('sending', true);
-    var to = ractive.get('to');
-    var fee = toAtom(ractive.get('fee'));
-    var value = toAtom(ractive.get('amount'));
-    var text = ractive.get('text')
-    var wallet = getWallet();
-    var tx = null;
-    var importTxOptions = ractive.get('importTxOptions');
-    var unspents_traceandfee = ractive.get('unspents_traceandfee')
+  ractive.on('add', function(){
+    ractive.set('addContact',false);
 
-    try {
-      if (importTxOptions) {
-        importTxOptions.fee = fee;
-        tx = wallet.createImportTx(importTxOptions);
-      } else {
-        console.log("to:" + to + "\nval:" + value + "\nfee:" + fee)
-        console.log("bal:" + wallet.getBalance())
-        tx = wallet.createTx(to, value, text, fee, 1 ,unspents_traceandfee);
-      }
-    } catch(err) {
-      if (err.message.match(/Insufficient funds/)) {
-        ractive.set('sending', false);
-        return showInfo({message: 'Please choose lower fee.', title: 'Insufficient funds'});
-      }
-      return handleTransactionError(err);
+    var _address = ractive.contact.address;
+    var _name = ractive.contact.name;
+
+    var contact = {
+      name: _name,
+      address: _address
     }
-    tx.forEach(function(tx) {
-      wallet.sendTx(tx, function (err, historyTx) {
-        if (err) return handleTransactionError(err);
+    console.log(contact)
 
-        ractive.set('confirmation', false);
-        ractive.set('success', true);
-        ractive.set('onDismiss', ractive.get('onSuccessDismiss'));
 
-        // update balance & tx history
-        emitter.emit('wallet-ready');
-        if (historyTx) {
-          emitter.emit('append-transactions', [parseHistoryTx(historyTx)]);
-        }
-        //updateUrl();
-      });
-    });
+    var contacts = db.get('contacts')
+    if(contacts == undefined){
+
+      contacts = [];
+
+    }
+    contacts.push(contact)
+
+    console.log("all contacts:")
+    console.log(contacts)
+    db.set('contacts',contacts)
+    console.log(db.get('contacts'));
+
+    ractive.set("contacts", contacts);
+    ractive.set('success',true);
+    emitter.emit('sync-contacts')
   });
-
-  function handleTransactionError(err) {
-    console.error(err);
-    ractive.set('confirmation', false)
-    ractive.set('error', err.message)
-  }
 
   return ractive
 }
@@ -101,7 +85,6 @@ function extendData(data) {
   var feeRates = null;
   var fees = null;
   var unspents = data.importTxOptions ? data.importTxOptions.unspents : null;
-
 
   if (data.isBitcoin) {
     var defaultFeePerKb = data.dynamicFees.minimum * 1000 || bitcoin.networks['bitcoin'].feePerKb;

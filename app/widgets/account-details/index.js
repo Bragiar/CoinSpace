@@ -9,6 +9,7 @@ var Avatar = require('lib/avatar')
 var db = require('lib/db')
 var setUsername = require('lib/wallet').setUsername
 var showRemoveConfirmation = require('widgets/modals/confirm-remove-account')
+var getLocation = require('lib/geo').getLocation
 
 module.exports = function init(el) {
 
@@ -19,9 +20,11 @@ module.exports = function init(el) {
       start_open: true,
       user: {
         firstName: '',
+        location: '',
         email: ''
       },
       editingName: false,
+      editingLocation: false,
       editingEmail: false,
       animating: false
     }
@@ -30,6 +33,7 @@ module.exports = function init(el) {
   var $previewEl = ractive.find('#details-preview')
   var $editEl = ractive.find('#details-edit')
   var $nameEl = ractive.find('#details-name')
+  var $locationEl = ractive.find('#details-location')
 
   $nameEl.onkeypress = function(e) {
     e = e || window.event;
@@ -42,6 +46,7 @@ module.exports = function init(el) {
 
   emitter.once('wallet-ready', function() {
     var userInfo = db.get('userInfo');
+    console.log(userInfo)
     ractive.set('user', userInfo);
     setAvatar()
 
@@ -76,13 +81,42 @@ module.exports = function init(el) {
     })
   })
 
+  ractive.on('get-location', function(){
+    ractive.set('locating',true);
+    console.log("fetching location...")
+
+    getLocation(function(err, lat, lon){
+      console.log(lat)
+      console.log(lon)
+      
+      if(!err){
+        console.log("Got location!")
+        console.log(lat + " " + lon);
+        ractive.find('#details-location').value = lat + "," + lon;
+        ractive.set('user.location',lat + "," + lon)
+        ractive.set('locating',false);
+      } else if(err){
+        console.log(error)
+        ractive.set('locating',false);
+      }
+    });
+
+
+  });
+
   ractive.on('submit-details', function(){
     if(ractive.get('animating')) return;
 
     var details = ractive.get('user')
+    
+    console.log("user:")
+    console.log(details)
 
     if(blank(details.firstName)) {
       return showError({message: "A name is required to set your profile on Coin"})
+    }
+    if(blank(details.location)) {
+      return showError({message: "A location is required to set your profile on Coin"})
     }
 
     if(blank(details.email) && details.avatarIndex == undefined) {
@@ -109,6 +143,8 @@ module.exports = function init(el) {
       });
 
     })
+
+    emitter.emit('prefill-details')
   })
 
   ractive.on('remove-account', function() {

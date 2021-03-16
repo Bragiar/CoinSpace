@@ -181,5 +181,18 @@
     "Please enter Gas Limit greater than zero": "Please enter Gas Limit greater than zero",
     "You do not have enough Ethereum funds to pay transaction fee (:ethereumRequired ETH).": "You do not have enough Ethereum funds to pay transaction fee (%(ethereumRequired)s ETH).",
     "Click to Select": "Click to Select",
-    "Donate your SMLY's": "Donate your SMLY's"
+    "Donate your SMLY's": "Donate your SMLY's",
+    "Select a contact to recieve the transaction": "Select a contact to recieve the transaction",
+    "Select a transaction": "Select a transaction",
+    "Contacts": "Contacts",
+    "Continue with a transaction": "Continue with a transaction",
+    "Create a new transaction": "Create a new transaction",
+    "Add contact": "Add contact",
+    "Your contacts": "Your contacts",
+    "Delete": "Delete",
+    "Delete contact": "Delete contact",
+    "Contact added": "Contact added",
+    "Your new contact will appear in the contact tab": "Your new contact will appear in the contact tab",
+    "Get your location": "Get your location",
+    "Your location": "Your location"
 }

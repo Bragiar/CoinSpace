@@ -37,7 +37,8 @@
     "mongodb": "^3.0.3",
     "node-gyp": "^3.6.2",
     "rebuild": "^0.1.2",
-    "retry": "^0.10.1"
+    "retry": "^0.10.1",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.1"
   },
   "devDependencies": {
     "ajv": "^5.2.2",
@@ -89,7 +90,7 @@
     "strftime": "^0.10.0",
     "style-loader": "^0.18.2",
     "typedarray-methods": "^1.0.1",
-    "uglifyjs-webpack-plugin": "^2.2.0",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.1",
     "velocity-animate": "^1.5.0",
     "webpack": "^3.5.6",
     "webpack-dev-server": "^2.8.1",

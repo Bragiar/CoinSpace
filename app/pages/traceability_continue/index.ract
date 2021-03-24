@@ -93,4 +93,4 @@
         <div class="_message">{{translate("You do not have any transactions yet")}}</div>
       </div>
     {{/loadingTx}}
-  {{/traceablity}}
+  {{/traceability}}

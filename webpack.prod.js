@@ -20,6 +20,10 @@ var config = merge(common, {
         test: /\.js$/,
         include: [
           /node_modules\/bech32/,
+          /node_modules\/bitcoinjs-lib/,
+          /node_modules\/tiny-secp256k1/,
+          /node_modules\/jsontokens/,
+          /node_modules\/bip32/
         ],
         use: {
           loader: 'babel-loader', // special for UglifyJSPlugin
@@ -64,8 +68,10 @@ var config = merge(common, {
       safe: true
     }),
     new UglifyJSPlugin({
-      mangle: {
-        except: ['BigInteger','ECPair','Point']
+      uglifyOptions: {
+        mangle: {
+          reserved: ['BigInteger','ECPair','Point']
+        }
       }
     }),
     new ExtractTextPlugin({
